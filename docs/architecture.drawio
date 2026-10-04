@@ -1,0 +1,263 @@
+<mxfile host="app.diagrams.net" agent="Claude" version="24.0.0">
+  <diagram id="rpa-architecture" name="RPA Architecture">
+    <mxGraphModel dx="1400" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="Web RPA Bot Architecture — one repo = one bot = one end-to-end process" style="text;html=1;fontSize=20;fontStyle=1;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="0" width="900" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Execution environments -->
+        <mxCell id="envs" value="Execution environments" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#f5f5f5;strokeColor=#666666;rounded=1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="260" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="local" value="&lt;b&gt;Local&lt;/b&gt;&lt;br&gt;.env file (never committed)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="envs">
+          <mxGeometry x="20" y="40" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ado" value="&lt;b&gt;Azure DevOps Pipeline&lt;/b&gt;&lt;br&gt;Variable Group ← Azure Key Vault" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="envs">
+          <mxGeometry x="20" y="120" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="airflow" value="&lt;b&gt;Airflow DAG&lt;/b&gt;&lt;br&gt;Connections / Variables&lt;br&gt;&lt;i&gt;(1 Airflow task runs the whole bot)&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="envs">
+          <mxGeometry x="20" y="210" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="envvars" value="&lt;b&gt;Environment variables&lt;/b&gt;&lt;br&gt;RPA_* · OTEL_*" style="shape=document;whiteSpace=wrap;html=1;boundedLbl=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="envs">
+          <mxGeometry x="20" y="320" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Entry layer -->
+        <mxCell id="entry" value="Entry layer" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="40" width="640" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="main" value="&lt;b&gt;main.py&lt;/b&gt;&lt;br&gt;bootstrap: settings, logging, engine" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="entry">
+          <mxGeometry x="20" y="40" width="280" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="settings" value="&lt;b&gt;config/settings.py&lt;/b&gt;&lt;br&gt;typed settings from env vars" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="entry">
+          <mxGeometry x="340" y="40" width="280" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- Process layer -->
+        <mxCell id="processLane" value="Process layer" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="180" width="640" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="process" value="&lt;b&gt;process.py&lt;/b&gt;&lt;br&gt;ordered list of tasks (the end-to-end process)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="processLane">
+          <mxGeometry x="160" y="38" width="320" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Tasks layer -->
+        <mxCell id="tasksLane" value="tasks/ — steps of the process · each exposes run(context) → context" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="310" width="640" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="t1" value="LoginTask" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;" vertex="1" parent="tasksLane">
+          <mxGeometry x="15" y="45" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t2" value="DownloadInvoicesTask" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;" vertex="1" parent="tasksLane">
+          <mxGeometry x="170" y="45" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t3" value="ConsolidateReportTask" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;" vertex="1" parent="tasksLane">
+          <mxGeometry x="335" y="45" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t4" value="SendReportTask" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d6b656;" vertex="1" parent="tasksLane">
+          <mxGeometry x="500" y="45" width="125" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- UI & integration layer -->
+        <mxCell id="uiLane" value="UI &amp; integration layer" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#ffe6cc;strokeColor=#d79b00;rounded=1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="460" width="640" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="pages" value="&lt;b&gt;pages/&lt;/b&gt;&lt;br&gt;LoginPage, InvoicesPage&lt;br&gt;locators + actions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="uiLane">
+          <mxGeometry x="15" y="40" width="190" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="components" value="&lt;b&gt;components/&lt;/b&gt;&lt;br&gt;ResultsTableComponent&lt;br&gt;menus, modals, paginators" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="uiLane">
+          <mxGeometry x="225" y="40" width="190" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="services" value="&lt;b&gt;services/&lt;/b&gt;&lt;br&gt;ExcelService, EmailService&lt;br&gt;DB, APIs (no browser)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#d79b00;" vertex="1" parent="uiLane">
+          <mxGeometry x="435" y="40" width="190" height="65" as="geometry" />
+        </mxCell>
+
+        <!-- Core layer -->
+        <mxCell id="coreLane" value="core/ — technical layer (knows nothing about the business)" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="610" width="640" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="basePage" value="base_page.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="coreLane">
+          <mxGeometry x="10" y="42" width="98" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="baseTask" value="base_task.py&lt;br&gt;&lt;i&gt;retries + timing&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="coreLane">
+          <mxGeometry x="114" y="42" width="98" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="context" value="context.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="coreLane">
+          <mxGeometry x="218" y="42" width="98" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="retry" value="retry.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="coreLane">
+          <mxGeometry x="322" y="42" width="98" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="exceptions" value="exceptions.py&lt;br&gt;&lt;i&gt;Business / System&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="coreLane">
+          <mxGeometry x="426" y="42" width="98" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="logger" value="logger.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="coreLane">
+          <mxGeometry x="530" y="42" width="98" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="engines" value="engines/ — the ONLY place that imports selenium / playwright" style="swimlane;whiteSpace=wrap;html=1;startSize=25;fillColor=#f3ecf6;strokeColor=#9673a6;rounded=1;fontSize=11;" vertex="1" parent="coreLane">
+          <mxGeometry x="10" y="100" width="618" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="factory" value="&lt;b&gt;engine_factory.py&lt;/b&gt;&lt;br&gt;reads RPA_ENGINE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="engines">
+          <mxGeometry x="10" y="38" width="135" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="baseEngine" value="&lt;b&gt;base_engine.py&lt;/b&gt;&lt;br&gt;abstract contract" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;dashed=1;" vertex="1" parent="engines">
+          <mxGeometry x="165" y="38" width="135" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="selenium" value="&lt;b&gt;selenium_engine.py&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="engines">
+          <mxGeometry x="320" y="38" width="135" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="playwright" value="&lt;b&gt;playwright_engine.py&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="engines">
+          <mxGeometry x="472" y="38" width="135" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- External -->
+        <mxCell id="extLane" value="External systems" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#f5f5f5;strokeColor=#666666;rounded=1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="860" width="640" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="browser" value="&lt;b&gt;Browser&lt;/b&gt;&lt;br&gt;Chrome / Edge / Chromium" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="extLane">
+          <mxGeometry x="20" y="42" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="website" value="&lt;b&gt;Target website&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="extLane">
+          <mxGeometry x="230" y="42" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="extSystems" value="&lt;b&gt;Excel · Email · DB · APIs&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="extLane">
+          <mxGeometry x="440" y="42" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Outputs & observability -->
+        <mxCell id="obs" value="Outputs &amp; observability" style="swimlane;whiteSpace=wrap;html=1;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;rounded=1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="40" width="300" height="930" as="geometry" />
+        </mxCell>
+        <mxCell id="dataInput" value="&lt;b&gt;data/input/&lt;/b&gt;&lt;br&gt;files the bot consumes" style="shape=folder;tabWidth=40;tabHeight=12;tabPosition=left;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="obs">
+          <mxGeometry x="20" y="430" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="dataOutput" value="&lt;b&gt;data/output/&lt;/b&gt;&lt;br&gt;&amp;lt;process&amp;gt;_&amp;lt;YYYYMMDD_HHMMSS&amp;gt;.xlsx" style="shape=folder;tabWidth=40;tabHeight=12;tabPosition=left;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="obs">
+          <mxGeometry x="20" y="510" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="evidence" value="&lt;b&gt;evidence/&lt;/b&gt;&lt;br&gt;&amp;lt;task&amp;gt;_attempt&amp;lt;n&amp;gt;_&amp;lt;timestamp&amp;gt;.png" style="shape=folder;tabWidth=40;tabHeight=12;tabPosition=left;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="obs">
+          <mxGeometry x="20" y="610" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="logs" value="&lt;b&gt;logs/ + console&lt;/b&gt;&lt;br&gt;process_name · task · attempt · status · duration_ms" style="shape=folder;tabWidth=40;tabHeight=12;tabPosition=left;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="obs">
+          <mxGeometry x="20" y="690" width="260" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="otel" value="&lt;b&gt;OpenTelemetry Collector&lt;/b&gt; &lt;i&gt;(optional)&lt;/i&gt;&lt;br&gt;opentelemetry-instrument python main.py" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;dashed=1;" vertex="1" parent="obs">
+          <mxGeometry x="20" y="780" width="260" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="backend" value="Grafana / Azure Monitor / any OTLP backend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;dashed=1;" vertex="1" parent="obs">
+          <mxGeometry x="20" y="860" width="260" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="obsNote" value="&lt;b&gt;Error policy&lt;/b&gt;&lt;br&gt;&lt;br&gt;• SystemException → retry (RPA_MAX_RETRIES = 3)&lt;br&gt;• BusinessException → no retry&lt;br&gt;• Every failed attempt: screenshot + log&lt;br&gt;• Browser always closed in finally" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fillColor=#ffffff;strokeColor=#b85450;rounded=1;spacing=10;" vertex="1" parent="obs">
+          <mxGeometry x="20" y="45" width="260" height="130" as="geometry" />
+        </mxCell>
+
+        <!-- Rules legend -->
+        <mxCell id="rules" value="&lt;b&gt;Layering rules&lt;/b&gt;&lt;br&gt;&lt;br&gt;1. Dependencies only point down.&lt;br&gt;&lt;br&gt;2. Tasks never contain locators.&lt;br&gt;&lt;br&gt;3. Pages never call other pages and hold no business logic.&lt;br&gt;&lt;br&gt;4. Only core/engines/ imports Selenium or Playwright.&lt;br&gt;&lt;br&gt;5. Tasks share data only through context.&lt;br&gt;&lt;br&gt;6. process.py defines the task order.&lt;br&gt;&lt;br&gt;&lt;b&gt;Locator prefixes&lt;/b&gt;&lt;br&gt;BTN_ TXT_ LBL_ LNK_ CHK_&lt;br&gt;RDO_ DDL_ TBL_ MDL_ IFR_&lt;br&gt;&lt;br&gt;CSS first · xpath= only if needed&lt;br&gt;Never time.sleep()" style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fillColor=#ffffff;strokeColor=#666666;rounded=1;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="500" width="260" height="470" as="geometry" />
+        </mxCell>
+
+        <!-- Edges: environments -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#666666;" edge="1" parent="1" source="local" target="envvars">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="50" y="110" /><mxPoint x="50" y="395" /></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#666666;" edge="1" parent="1" source="ado" target="envvars">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#666666;" edge="1" parent="1" source="airflow" target="envvars">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="read by" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#6c8ebf;fontSize=10;" edge="1" parent="1" source="envvars" target="settings">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="330" y="395" /><mxPoint x="330" y="160" /><mxPoint x="840" y="160" /></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Edges: main flow -->
+        <mxCell id="e5" value="loads" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;" edge="1" parent="1" source="main" target="settings">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="runs" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;" edge="1" parent="1" source="main" target="process">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="executes in order" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;" edge="1" parent="1" source="process" target="tasksLane">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="context" style="endArrow=classic;html=1;dashed=1;fontSize=10;strokeColor=#d6b656;" edge="1" parent="1" source="t1" target="t2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="context" style="endArrow=classic;html=1;dashed=1;fontSize=10;strokeColor=#d6b656;" edge="1" parent="1" source="t2" target="t3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="context" style="endArrow=classic;html=1;dashed=1;fontSize=10;strokeColor=#d6b656;" edge="1" parent="1" source="t3" target="t4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="call methods (no locators)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;" edge="1" parent="1" source="tasksLane" target="uiLane">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="inherit / use" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;" edge="1" parent="1" source="uiLane" target="coreLane">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Edges: engines -->
+        <mxCell id="e13" style="endArrow=block;endFill=0;html=1;strokeColor=#9673a6;" edge="1" parent="1" source="selenium" target="baseEngine">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;endFill=0;html=1;strokeColor=#9673a6;" edge="1" parent="1" source="playwright" target="baseEngine">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="909" y="810" /><mxPoint x="602" y="810" /></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e15" value="creates" style="endArrow=classic;html=1;dashed=1;fontSize=10;strokeColor=#9673a6;" edge="1" parent="1" source="factory" target="baseEngine">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e16" value="drives" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;" edge="1" parent="1" source="selenium" target="browser">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="757" y="845" /><mxPoint x="470" y="845" /></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e17" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="playwright" target="browser">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="909" y="845" /><mxPoint x="470" y="845" /></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e18" style="endArrow=classic;html=1;" edge="1" parent="1" source="browser" target="website">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e19" value="read / write" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#d79b00;" edge="1" parent="1" source="services" target="extSystems">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="1020" y="537" /><mxPoint x="1020" y="927" /></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Edges: outputs & observability -->
+        <mxCell id="e20" value="reads" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#b85450;" edge="1" parent="1" source="dataInput" target="services">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" value="writes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#b85450;" edge="1" parent="1" source="services" target="dataOutput">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" value="screenshot on failure" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#b85450;" edge="1" parent="1" source="baseTask" target="evidence">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="523" y="640" /><mxPoint x="1040" y="640" /><mxPoint x="1040" y="680" /></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e23" value="structured logs" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontSize=10;strokeColor=#b85450;" edge="1" parent="1" source="logger" target="logs">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e24" value="auto-instrumentation" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;fontSize=10;strokeColor=#b85450;" edge="1" parent="1" source="logs" target="otel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e25" value="OTLP" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;dashed=1;fontSize=10;strokeColor=#b85450;" edge="1" parent="1" source="otel" target="backend">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

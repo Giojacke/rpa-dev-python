@@ -1,0 +1,14 @@
+# Browser engines (select one at runtime with RPA_ENGINE)
+selenium>=4.20
+playwright>=1.45  # after installing: python -m playwright install chromium
+
+# Configuration and services
+python-dotenv>=1.0
+openpyxl>=3.1
+
+# Tests
+pytest>=8.0
+
+# Optional: OpenTelemetry export (no code changes needed, see README)
+# opentelemetry-distro
+# opentelemetry-exporter-otlp

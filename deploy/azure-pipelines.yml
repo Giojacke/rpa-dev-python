@@ -1,0 +1,67 @@
+# Example: run the bot on a schedule from Azure DevOps.
+#
+# Secrets live in Azure Key Vault. Create a Variable Group (Pipelines > Library)
+# linked to the Key Vault and select the secrets. Key Vault names cannot
+# contain "_", so secrets are named with "-" and mapped to RPA_* env vars below.
+# Secret variables are NOT exposed to scripts automatically: map each one in `env:`.
+
+trigger: none
+
+schedules:
+  - cron: "0 6 * * 1-5"          # weekdays 06:00 UTC
+    displayName: Weekday run
+    branches:
+      include: [main]
+    always: true
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group: rpa-sample-login-kv   # Variable Group linked to Key Vault: rpa-username, rpa-password
+  - name: RPA_ENGINE
+    value: playwright
+  - name: RPA_BASE_URL
+    value: https://the-internet.herokuapp.com
+
+steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: "3.11"
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
+      python -m playwright install --with-deps chromium
+    displayName: Install dependencies
+
+  - script: python main.py
+    displayName: Run bot
+    env:
+      RPA_PROCESS_NAME: sample_login
+      RPA_ENGINE: $(RPA_ENGINE)
+      RPA_HEADLESS: "true"
+      RPA_BASE_URL: $(RPA_BASE_URL)
+      RPA_TIMEOUT_SECONDS: "30"
+      RPA_MAX_RETRIES: "3"
+      RPA_USERNAME: $(rpa-username)
+      RPA_PASSWORD: $(rpa-password)
+      # Optional OpenTelemetry export: change the step to
+      # `opentelemetry-instrument python main.py` and uncomment:
+      # OTEL_SERVICE_NAME: rpa-sample-login
+      # OTEL_EXPORTER_OTLP_ENDPOINT: $(otel-endpoint)
+      # OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED: "true"
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish logs
+    condition: always()
+    inputs:
+      targetPath: logs
+      artifact: logs-$(Build.BuildId)
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish evidence
+    condition: always()
+    inputs:
+      targetPath: evidence
+      artifact: evidence-$(Build.BuildId)

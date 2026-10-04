@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 200" width="700" height="200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Icon: browser window with layered structure -->
+  <g transform="translate(20,20)">
+    <rect x="0" y="0" width="160" height="160" rx="32" fill="url(#bg)"/>
+    <!-- browser frame -->
+    <rect x="24" y="30" width="112" height="100" rx="12" fill="#ffffff" fill-opacity="0.12" stroke="#ffffff" stroke-width="5"/>
+    <line x1="24" y1="52" x2="136" y2="52" stroke="#ffffff" stroke-width="5"/>
+    <circle cx="38" cy="41" r="3.5" fill="#ffffff"/>
+    <circle cx="50" cy="41" r="3.5" fill="#ffffff"/>
+    <circle cx="62" cy="41" r="3.5" fill="#ffffff"/>
+    <!-- layers: tasks / pages / core -->
+    <rect x="38" y="64" width="84" height="12" rx="6" fill="#FDE68A"/>
+    <rect x="38" y="84" width="84" height="12" rx="6" fill="#FDBA74"/>
+    <rect x="38" y="104" width="84" height="12" rx="6" fill="#C4B5FD"/>
+    <!-- automation cursor -->
+    <path d="M112 96 L112 142 L123 131 L131 148 L139 144 L131 127 L146 127 Z" fill="#ffffff" stroke="#1E1B4B" stroke-width="3.5" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="210" y="102" font-family="'Segoe UI', Inter, Helvetica, Arial, sans-serif" font-size="58" font-weight="800" fill="#1E1B4B">RPA<tspan fill="#7C3AED">·</tspan>Python</text>
+  <text x="212" y="140" font-family="'Segoe UI', Inter, Helvetica, Arial, sans-serif" font-size="20" font-weight="500" fill="#64748B" letter-spacing="1.5">Selenium · Playwright · Page Object Model</text>
+</svg>

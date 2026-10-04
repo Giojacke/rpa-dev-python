@@ -1,0 +1,20 @@
+# Secrets
+.env
+
+# Runtime output (keep the folders through .gitkeep)
+logs/*
+!logs/.gitkeep
+evidence/*
+!evidence/.gitkeep
+data/output/*
+!data/output/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Local agent tooling (not part of the template)
+.atl/

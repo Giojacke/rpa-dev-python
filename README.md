@@ -14,7 +14,9 @@
   <img src="https://img.shields.io/github/license/Giojacke/rpa-dev-python?color=blue" alt="MIT License">
 </p>
 
-# rpa-&lt;process-name&gt;
+# rpa-dev-python
+
+> 💡 This is the **template**. When you create a bot from it, name the new repo `rpa-<process-name>` (e.g. `rpa-download-invoices`).
 
 Reference template for building **web RPA bots in Python** with **Selenium** or **Playwright**.
 
@@ -351,8 +353,11 @@ Without those variables, the bot runs exactly the same, with logs only to the co
 
 ## Quick start
 
+1. Click **Use this template → Create a new repository** and name it `rpa-<process-name>`.
+2. Clone your new repo:
+
 ```bash
-git clone https://github.com/<user>/rpa-<process-name>.git
+git clone https://github.com/<your-user>/rpa-<process-name>.git
 cd rpa-<process-name>
 
 python -m venv .venv

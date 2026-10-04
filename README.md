@@ -5,6 +5,15 @@
   </picture>
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.10%2B-3776AB?logo=python&logoColor=white" alt="Python 3.10+">
+  <img src="https://img.shields.io/badge/Selenium-supported-43B02A?logo=selenium&logoColor=white" alt="Selenium">
+  <img src="https://img.shields.io/badge/Playwright-supported-2EAD33?logo=playwright&logoColor=white" alt="Playwright">
+  <img src="https://img.shields.io/badge/pattern-Page%20Object%20Model-7C3AED" alt="Page Object Model">
+  <img src="https://img.shields.io/badge/AGENTS.md-ready-1E1B4B" alt="AGENTS.md ready">
+  <img src="https://img.shields.io/github/license/Giojacke/rpa-dev-python?color=blue" alt="MIT License">
+</p>
+
 # rpa-&lt;process-name&gt;
 
 Reference template for building **web RPA bots in Python** with **Selenium** or **Playwright**.
